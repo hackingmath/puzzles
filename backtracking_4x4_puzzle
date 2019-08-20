@@ -1,0 +1,87 @@
+import time
+starttime = time.time() 
+
+ROWS = [48,29,66,57]
+COLS = [42,36,62,60]
+
+starting_number = -16
+while sum(range(starting_number,starting_number+16)) != sum(ROWS):
+    starting_number += 1
+print("Starting number:",starting_number)
+NUMS = list(range(starting_number,starting_number + 16))
+
+def row(board,n):
+    """Returns values in row n of board"""
+    return board[4*n:4*n+4]
+
+def col(board,n):
+    """Returns values in column n of board"""
+    col_nums = [[0,4,8,12],
+                [1,5,9,13],
+                [2,6,10,14],
+                [3,7,11,15]]
+    return [board[x] for x in col_nums[n]]
+
+def repeat(board):
+    """Returns True if there is a repeat"""
+    for n in board:
+        if n != 'X':
+            if board.count(n) > 1:
+                return True
+    return False
+
+def print_board(board):
+    for i in range(4):
+        print("{:2d} {:2d} {:2d} {:2d}".format(row(board,i)[0],
+                                            row(board,i)[1],
+                                            row(board,i)[2],
+                                            row(board,i)[3]))
+    print() #blank line
+
+def check_no_conflicts(board):
+    """Returns True if there are no conflicts"""
+    if repeat(board):
+        return False
+
+    for i in range(4):
+        #check ROWS
+        thisrow = row(board,i)
+        if thisrow.count('X') == 0:
+            if sum(thisrow) != ROWS[i]:
+                return False
+        #check columns
+        thiscol = col(board,i)
+        if thiscol.count('X') == 0:
+            if sum(thiscol) != COLS[i]:
+                return False
+    
+    #now check if center squares are multiples of 5
+    center = [5,6,9,10]
+    for c in center:
+        s = board[c]
+        if s != 'X':
+            if s % 5 != 0:
+                return False
+    return True
+
+def solve(values,safe_up_to,size):
+    """Return the solution as a list of values"""
+    solution = ['X']*size
+    def extend_solution(position):
+        for value in values:
+            solution[position] = value
+            #print_board(solution)
+            if safe_up_to(solution):
+                if position >= size-1 or extend_solution(position+1):
+                    return solution
+            else: #backtrack
+                solution[position] = 'X'
+                if value == values[-1]:
+                    solution[position-1] = 'X'
+                if position < size-1:
+                    solution[position + 1] = 'X'
+        return None
+    return extend_solution(0)
+
+print_board(solve(NUMS,check_no_conflicts,16))
+print("Time(secs):",round(time.time() - starttime,1))
