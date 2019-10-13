@@ -1,8 +1,7 @@
-﻿'''Adapting my Numoku Solver to do a weekend
+﻿'''Weekend puzzle
 https://twitter.com/1to9puzzle/status/1183187525923291137
 Oct. 13, 2019'''
 
-import copy
 import time
 import random
 
