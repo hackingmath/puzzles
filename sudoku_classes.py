@@ -6,8 +6,7 @@ import time
 import random
 
 starttime = time.time()
-BOARD = '.......X5XX6.6X..73X4X9.X.X....X.2....X.....X..XXX1..X9..5......X.X...X....X.X.....X.X7..X8..4X.X.....X....X...X....XX...X5XX.4...1....2X1X9X...'
-#How would this work on a simple ("evil") 9x9 Sudoku? (answer: lightning fast! Around a second)
+#"evil" sudoku example
 BOARD = '..1.4.....75.86...89........4....8.15..1.2..37.9....6........49...72.63.....6.1..'
 
 class Board(object):
@@ -18,7 +17,6 @@ class Board(object):
         self.quadcols = quadcols
         self.BOARD = board
         self.BLANKS = [i for i in range(self.rows*self.cols) if self.BOARD[i] == 'X']
-        #self.NUMS = [6,5,15,13,7,15,18,17,11,13,14,17,13,6,22,20,25,15,26,16,8,22,19,17,19,21,13,8,19,24,16,7,11,3,14,18] #values of dark digits
         self.NUMBLANKS = self.BOARD.count('.')
         self.created_board = self.create_board()
         self.populated_board = []
@@ -28,9 +26,7 @@ class Board(object):
         to be filled with numbers"""
         output = []
         for n in self.BOARD:
-            if n == 'X':
-                term = 'X'
-            elif n == '.':
+            if n == '.':
                 term = 0
             else:
                 term = int(n)
