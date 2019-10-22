@@ -6,7 +6,7 @@ import time
 import random
 
 starttime = time.time()
-#"evil" sudoku example
+
 BOARD = '..1.4.....75.86...89........4....8.15..1.2..37.9....6........49...72.63.....6.1..'
 
 class Board(object):
@@ -37,16 +37,11 @@ class Board(object):
         '''Puts new values into existing board spots
         to prevent overwriting hard values'''
         output = []
-        numscount = 0  # nums in white squares
         i = 0
         for j in range(self.rows * self.cols):
             if self.created_board[j] == 0:
                 output.append(boardlist[i])
                 i += 1
-            elif self.created_board[j] == 'X':
-                output.append('X')  # str(NUMS[numscount]))
-                numscount += 1
-
             else:
                 output.append(self.created_board[j])
 
@@ -173,5 +168,19 @@ main()
 '''
 Solution: 
 
+2 3 1 | 9 4 5 | 7 8 6
+4 7 5 | 3 8 6 | 9 1 2
+8 9 6 | 2 7 1 | 3 5 4
+
+3 4 2 | 6 5 7 | 8 9 1
+5 6 8 | 1 9 2 | 4 7 3
+7 1 9 | 4 3 8 | 2 6 5
+
+6 2 7 | 8 1 3 | 5 4 9
+1 5 4 | 7 2 9 | 6 3 8
+9 8 3 | 5 6 4 | 1 2 7
+
+
+Time (secs): 0.9
 
 '''
