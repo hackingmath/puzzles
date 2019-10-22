@@ -1,4 +1,4 @@
-'''Sudoku Solver
+'''Sudoku and Numoku Solver
 OOP Version October 21, 2019'''
 
 import copy
@@ -7,8 +7,11 @@ import random
 
 starttime = time.time()
 
-BOARD = '..1.4.....75.86...89........4....8.15..1.2..37.9....6........49...72.63.....6.1..'
+"""For Sudoku, in main() set board = Board(9,9,3,3)
+For Numoku set board = Board(6,6,3,3)"""
 
+BOARD = '..1.4.....75.86...89........4....8.15..1.2..37.9....6........49...72.63.....6.1..'
+#BOARD = '...8...8..3.9..5....83.4.5..7...3...'
 class Board(object):
     def __init__(self,board,rows,cols,quadrows,quadcols):
         self.rows = rows
@@ -75,8 +78,10 @@ class Board(object):
             self.populate_board(g)
         g = self.populated_board
         for i in range(self.rows):
-            print(f"{g[self.cols*i+0]} {g[self.cols*i+1]} {g[self.cols*i+2]} | {g[self.cols*i+3]} {g[self.cols*i+4]} {g[self.cols*i+5]} | {g[self.cols*i+6]} {g[self.cols*i+7]} {g[self.cols*i+8]}")# {g[self.cols*i+9]} {g[self.cols*i+10]} {g[self.cols*i+11]}")
-
+            if self.rows == 9:
+                print(f"{g[self.cols*i+0]} {g[self.cols*i+1]} {g[self.cols*i+2]} | {g[self.cols*i+3]} {g[self.cols*i+4]} {g[self.cols*i+5]} | {g[self.cols*i+6]} {g[self.cols*i+7]} {g[self.cols*i+8]}")# {g[self.cols*i+9]} {g[self.cols*i+10]} {g[self.cols*i+11]}")
+            else:
+                print(f"{g[self.cols*i+0]} {g[self.cols*i+1]} {g[self.cols*i+2]} | {g[self.cols*i+3]} {g[self.cols*i+4]} {g[self.cols*i+5]}")
             if i%3 == 2:
                 print()
         print() #blank line
@@ -100,12 +105,18 @@ class Board(object):
             if self.repeat(thisrow):
                 #print("repeat row",i)
                 return False
+            if self.rows == 6:
+                if thisrow.count(0) == 0 and sum(thisrow) != 30:
+                    return False
 
             thiscol = self.col(i)
             #print(thiscol)
             if self.repeat(thiscol):
                 #print("repeat col", i)
                 return False
+            if self.rows == 6:
+                if thiscol.count(0) == 0 and sum(thiscol) != 30:
+                    return False
 
         for n in range(int(self.rows*self.cols/(self.quadrows*self.quadcols))):
             thisquad = self.quadrant(n)
