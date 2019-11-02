@@ -1,7 +1,4 @@
-BOARD = [0 0 0 0 0 0 0 0 0; 5 0 3 0 6 7 0 0 0; 9 0 0 3 4 2 1 0 0
-        0 0 0 0 0 4 0 0 0; 0 0 1 0 0 0 7 2 0; 0 0 2 0 1 0 0 0 0
-        0 3 0 0 0 0 0 0 9; 0 8 0 1 0 0 2 0 0; 0 0 0 7 5 0 8 0 6]
-STARTGRID = ["000000700050000000000010000700000000000000001000500000007000000000000090000001000",
+STARTGRID = ["003020600900305001001806400008102900700000008006708200002609500800203009005010300",
 "200080300060070084030500209000105408000000000402706000301007040720040060004010003",
 "000000907000420180000705026100904000050000040000507009920108000034059000507000000",
 "030050040008010500460000012070502080000603000040109030250000098001020600080060020",
@@ -50,10 +47,8 @@ STARTGRID = ["000000700050000000000010000700000000000000001000500000007000000000
 "000700800006000031040002000024070000010030080000060290000800070860000500002006000",
 "001007090590080001030000080000005800050060020004100000080000030100020079020700400",
 "000003017015009008060000000100007000009000200000500004000000020500600340340200000",
-"300200000000107000706030500070009080900020004010800050009040301000702000000008006"];
-        
-blanks = count(i->(i==0),BOARD)
-
+"300200000000107000706030500070009080900020004010800050009040301000702000000008006"]
+    
 function row(board,n)
     return board[n,:]
 end
@@ -79,14 +74,17 @@ function repeat(mylist)
     return false
     end
 
-# function format_board(boardstr)
-#     output = [parse(Int,boardstr[i]) for i in 1:81]
-#     return output
-# end
+function format_board(boardstr)
+    output = []
+    for i in 1:81
+        push!(output,parse(Int64,boardstr[i]))
+    end
+    output = reshape(output,(9,9))
+    return output
+end
 
-function populate_board(solutionboard)
-    board = vcat(BOARD...) #flattens BOARD
-    #print("board",board)
+function populate_board(b,solutionboard)
+    board = vcat(b...) #flattens BOARD
     s = 1
     for (index,num) in enumerate(board)
         if num == 0
@@ -98,10 +96,11 @@ function populate_board(solutionboard)
     return board
 end
 
-function print_board(board)
+function print_board(b,board)
     if length(board) < 81
-        board = populate_board(board)
+        board = populate_board(b,board)
     end
+    board = transpose(board)
     for i in 1:9
         println(row(board,i))
         
@@ -109,9 +108,8 @@ function print_board(board)
     print(" ")
 end
 
-function check_no_conflicts(solutionboard)
-    board = populate_board(solutionboard)
-    #print_board(board)
+function check_no_conflicts(b,solutionboard)
+    board = populate_board(b,solutionboard)
     for i in 1:9
         thisrow = row(board,i)
         if repeat(thisrow)
@@ -125,18 +123,16 @@ function check_no_conflicts(solutionboard)
             return false
         end
     end
-    #print("No Conflicts")
     return true
 end
 
-function solve(values,safe_up_to,size)
+function solve(b,values,safe_up_to,size)
     solution = fill(0,size)
     function extend_solution(position)
         
         for value in values
             solution[position] = value
-            #print(solution)
-            if safe_up_to(solution)
+            if safe_up_to(b,solution)
                 if (position >= size) || extend_solution(position+1) !=0
                     return solution
                 end
@@ -157,6 +153,21 @@ function solve(values,safe_up_to,size)
     return extend_solution(1)
     
 end
-#print(STARTGRID[1])
-#print_board(format_board(STARTGRID[1]))
-@time print_board(solve(1:9,check_no_conflicts,blanks))
+
+function main()
+    top_left = 0
+   for j in 1:length(STARTGRID)
+        println("Board $j")
+        b = format_board(STARTGRID[j])
+        
+        blanks = count(i->(i==0),b)
+        print_board(b,fill(0,blanks))
+        soln = populate_board(b,solve(b,1:9,check_no_conflicts,blanks))
+        top_left += 100*soln[1,1]+10*soln[2,1]+soln[3,1]
+        println("top left: $top_left")
+        @time print_board(b,soln)
+   end
+   println("top left",top_left)
+end
+
+@time main()
