@@ -176,6 +176,12 @@ print("Time (secs):",round(time.time() - starttime,1))
 '''
 Solution: #200
 
-
+30 29 28 27 26 25
+ 5  6 21 22 23 24
+ 4  7 20 19 18 17
+ 3  8  9 12 13 16
+ 2  1 10 11 14 15
+ 
+Time (secs): 367.7
 
 '''
