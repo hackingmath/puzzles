@@ -2,9 +2,10 @@
 https://youtu.be/3EmDDhBg5Gw
 June 7, 2021
 
-List of numbers between 1-24. Choose 2 or 3 
-numbers and erase the ones you use, add the 
-(irrational) ones and keep pairing them up and
+List of numbers between 1-24. Choose 2 
+numbers as legs, find their hypotenuse. 
+Remove the legs from the list, add the hypotenuse
+to the list, keep pairing them up and
 erasing until you get to one last number.
 
 """
