@@ -21,8 +21,6 @@ while len(nums) > 1:
     c = sqrt(a**2 + b**2)
     if c in nums:
         nums.remove(c)
-    else:
-        nums.append(c)
     nums.remove(a)
     nums.remove(b)
 
